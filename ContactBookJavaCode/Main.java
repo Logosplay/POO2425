@@ -17,13 +17,13 @@ public class Main {
     // Constants defining messages for the user
     public static final String CONTACT_EXISTS = "Contact already exists.";
     public static final String NAME_NOT_EXIST = "Contact does not exist.";
-    public static final String PHONE_NOT_EXIST = "Phone number does not exist."
+    public static final String PHONE_NOT_EXIST = "Phone number does not exist.";
     public static final String CONTACT_ADDED = "Contact added.";
     public static final String CONTACT_REMOVED = "Contact removed.";
     public static final String CONTACT_UPDATED = "Contact updated.";
     public static final String BOOK_EMPTY = "Contact book empty.";
-    public static final String PHONE_SHARE = "There are contacts that share phone numbers"
-    public static final String PHONE_NOT_SHARE = "All contacts have different phone numbers."
+    public static final String PHONE_SHARE = "There are contacts that share phone numbers";
+    public static final String PHONE_NOT_SHARE = "All contacts have different phone numbers.";
     public static final String QUIT_MSG = "Goodbye!";
     public static final String COMMAND_ERROR = "Unknown command.";
 
@@ -35,21 +35,44 @@ public class Main {
         do {
             comm = getCommand(in);
             switch (comm) {
-                case ADD_CONTACT -> addContact(in, cBook);
-                case REMOVE_CONTACT -> deleteContact(in, cBook);
-                case GET_PHONE -> getPhone(in, cBook);
-                case GET_EMAIL -> getEmail(in, cBook);
-                case GET_NAME -> getName(in, cbook);
-                case SET_PHONE -> setPhone(in, cBook);
-                case SET_EMAIL -> setEmail(in, cBook);
-                case EXISTS_PHONE -> existsPhone(in, cBook);
-                case LIST_CONTACTS -> listAllContacts(cBook);
-                case QUIT -> System.out.println(QUIT_MSG);
-                default -> System.out.println(COMMAND_ERROR);
+                case ADD_CONTACT:
+                    addContact(in, cBook);
+                    break;
+                case REMOVE_CONTACT:
+                    deleteContact(in, cBook);
+                    break;
+                case GET_PHONE:
+                    getPhone(in, cBook);
+                    break;
+                case GET_EMAIL:
+                    getEmail(in, cBook);
+                    break;
+                case GET_NAME:
+                    getName(in, cBook);
+                    break;
+                case SET_PHONE:
+                    setPhone(in, cBook);
+                    break;
+                case SET_EMAIL:
+                    setEmail(in, cBook);
+                    break;
+                case EXISTS_PHONE:
+                    existsPhone(in, cBook);
+                    break;
+                case LIST_CONTACTS:
+                    listAllContacts(cBook);
+                    break;
+                case QUIT:
+                    System.out.println(QUIT_MSG);
+                    break;
+                default:
+                    System.out.println(COMMAND_ERROR);
+                    break;
             }
         } while (!comm.equals(QUIT));
         in.close();
     }
+
 
     /**
      * Reads a command from the user.
@@ -131,15 +154,25 @@ public class Main {
 		else System.out.println(NAME_NOT_EXIST);
 	}
 
-    private static void getName(Scanner in, ContactBook cBook){
-        String phone;
-        phone = in.nextLine();
+    /**
+    * Retrieves the name of a contact from the contact book based on the provided phone number.
+    *
+    * @param in Scanner for reading user input
+    * @param cBook the ContactBook to consult
+    *
+    * @return void. Prints the name of the contact if found, otherwise prints a message indicating that the phone number does not exist.
+    */
+    private static void getName(Scanner in, ContactBook cBook) {
+        int phone;
+        
+        phone = in.nextInt();
+        in.nextLine();
+        
         if (cBook.hasPhone(phone)) {
-			System.out.println(cBook.getName(phone));
-		}
-		else System.out.println(PHONE_NOT_EXIST);
-	}
-
+            System.out.println(cBook.getName(phone)); // Fixed method name
+        } else {
+            System.out.println(PHONE_NOT_EXIST);
+        }
     }
 
     /**
@@ -177,6 +210,15 @@ public class Main {
 		}
 		else System.out.println(NAME_NOT_EXIST);
 	}
+    
+    private static void existsPhone(Scanner in, ContactBook cBook) {
+
+        if (cBook.sharesPhone()) {
+            System.out.println(PHONE_SHARE);
+        } else {
+            System.out.println(PHONE_NOT_SHARE);
+        }
+    }
 
 	 /**
      * Lists all contacts from the contact book.

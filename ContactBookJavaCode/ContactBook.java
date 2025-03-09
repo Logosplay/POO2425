@@ -25,8 +25,12 @@ public class ContactBook {
         return searchIndex(name) >= 0;
     }
 
-    public boolean hasPhone(String phone) {
-        return searchIndex(phone) >= 0;
+    public boolean hasPhone(int phone) {
+        return searchPhone (phone) >= 0;
+    }
+
+    public boolean sharesPhone() {
+        return searchShared ();
     }
 
     /**
@@ -36,6 +40,7 @@ public class ContactBook {
      */
     public int getNumberOfContacts() {
         return counter;
+
     }
 
     /**
@@ -77,8 +82,8 @@ public class ContactBook {
         return contacts[searchIndex(name)].getPhone();
     }
 
-    public int getName(String phone) {
-        return contacts[searchIndex(phone)].getPhone();
+    public String getName(int phone) {
+        return contacts[searchPhone(phone)].getName();
     }
 
     /**
@@ -134,6 +139,47 @@ public class ContactBook {
                 i++;
         if (found) result = i;
         return result;
+    }
+
+    private int searchPhone(int phone) {
+        int i = 0;
+        int result = -1;
+        boolean found = false;
+        while (i < counter && !found)
+            if (contacts[i].getPhone() == phone)
+                found = true;
+            else
+                i++;
+        if (found) result = i;
+        return result;
+    }
+
+    private boolean searchShared() {
+        int i = 1;
+        int j = 0;
+        boolean found = false;
+        
+        if (contacts[0] == null) {
+            return false;
+        }
+
+        int phone = contacts[0].getPhone();
+
+        while (!found && j < counter - 1){
+            if (i >= counter){
+                j++;
+                phone = contacts[j].getPhone();
+                i = j + 1;
+            }
+
+            if (contacts[i] != null && contacts[i].getPhone() == phone) {
+                found = true;
+            
+            } else {
+                i++;
+            }
+        }
+        return found;
     }
 
     private void resize() {
