@@ -10,18 +10,7 @@ public class Main {
   public final static String MOVE = "move";
   public final static String MINAREA = "minarea";
   public final static String EXIT = "exit";
-
-  public static final String NETWORK_EMPTY = "Empty social network.";
-  public static final String REGISTER_SUCCESS = "Successfully registered.";
-  public static final String REGISTER_ERROR = "Already registered.";
-  public static final String FRIENDSHIP_EXIST = "Friendship already exists.";
-  public static final String FRIENDSHIP_NOTEXIST = "Non-existent friendship.";
-  public static final String NO_FRIENDS = "No registered friends.";
-  public static final String REGISTER_NOTEXIST = "Not registered.";
-  public static final String REGISTER_EXIST = "Already registered.";
-  public static final String FRIENDSHIP_SUCCESS = "Friendship created.";
-  public static final String FRIENDSHIP_ERROR = "Invalid friendship.";
-  public static final String STATUS_UPDATE = "Status updated.";
+  
   public static final String QUIT_MSG = "Bye.";
   public static final String COMMAND_ERROR = "There was an error.";
 
