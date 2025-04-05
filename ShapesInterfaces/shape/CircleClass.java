@@ -1,16 +1,15 @@
 package shape;
 
-public class CircleClass extends AbstractClass {
-  private int radius;
-  
-  public Circle(int x, int y, int radius) {
-    this.x = in.nextInt();
-    this.y = in.nextInt();
-    this.radius = in.nextInt();
-  }
+public class CircleClass extends Shape {
+    private int radius;
 
-  public CircleClass(int x, int y, String id, int radius) {
-    super (x, y, id);
-    this.radius = radius;
-  }
+    public CircleClass(String id, int x, int y, int radius) {
+        super(id, x, y);
+        this.radius = radius;
+        this.type = "CIRCLE";  // Set the type for Circle
+    }
+
+    public double getArea() {
+        return Math.PI * radius * radius;
+    }
 }

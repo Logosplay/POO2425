@@ -13,8 +13,7 @@ public interface ShapesApp {
 	
 	/**
 	 * Checks if the provided type is a valid shape type.
-	 * 
-	 * @param type The type of shape to check.
+	 * 	 * @param type The type of shape to check.
 	 * @return true if the provided type is a valid shape type, false otherwise.
 	 * @pre type != null
 	 */
