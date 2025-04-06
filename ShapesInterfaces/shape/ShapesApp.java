@@ -18,7 +18,8 @@ public interface ShapesApp {
 	 * @pre type != null
 	 */
 	static boolean isValidType(String type) {
-		return type.equals(CIRCLE) || type.equals(RECTANGLE);
+		return type != null && 
+			   (type.equalsIgnoreCase(CIRCLE) || type.equalsIgnoreCase(RECTANGLE));
 	}
 	
 	/**

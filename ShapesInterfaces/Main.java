@@ -14,13 +14,18 @@ public class Main {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         ShapesCollectionClass sCollection = new ShapesCollectionClass();
-
+    
         while (true) {
-            String command = in.nextLine().trim().toUpperCase();
+            String[] input = in.nextLine().trim().split(" ");
+            String command = input[0].toUpperCase();
+    
             switch (command) {
-                case ADD:
-                    addShapeType(in, sCollection);
+                case ADD: {
+                    String type = input.length > 1 ? input[1].toUpperCase() : null;
+                    System.out.println(type);
+                    addShapeType(in, sCollection, type);
                     break;
+                }
                 case LIST:
                     listShape(in, sCollection);
                     break;
@@ -32,42 +37,43 @@ public class Main {
                     break;
                 case EXIT:
                     System.out.println(QUIT_MSG);
-                    in.close();
                     return;
                 default:
                     System.out.println(COMMAND_ERROR);
                     break;
             }
+            in.close();
         }
     }
 
-    private static void addShapeType(Scanner in, ShapesCollection  sCollection) {
-        String type = in.nextLine().trim().toUpperCase();
-        if (!ShapesApp.isValidType(type)) {
-            System.out.println("Type does not exist.");
-            return;
-        }
 
-        String[] parts = in.nextLine().trim().split(" ");
-        String id = parts[0];
-        int x = Integer.parseInt(parts[1]);
-        int y = Integer.parseInt(parts[2]);
-
-        if ( sCollection.hasElem(id)) {
-            System.out.println("Identifier already exists.");
-            return;
-        }
-
-        if (type.equals(ShapesApp.CIRCLE)) {
-            int radius = Integer.parseInt(parts[3]);
-             sCollection.addElem(new CircleClass(id, x, y, radius));
-        } else {
-            int height = Integer.parseInt(parts[3]);
-            int width = Integer.parseInt(parts[4]);
-             sCollection.addElem(new RectangleClass(id, x, y, height, width));
-        }
-        System.out.println("A new " + type + " was added.");
+private static void addShapeType(Scanner in, ShapesCollection sCollection, String type){
+    
+    if (type == null || !ShapesApp.isValidType(type)) {
+        System.out.println("Type does not exist.");
+        return;
     }
+    
+    String[] parts = in.nextLine().trim().split(" ");
+    String id = parts[0];
+    int x = Integer.parseInt(parts[1]);
+    int y = Integer.parseInt(parts[2]);
+    
+    if (sCollection.hasElem(id)) {
+        System.out.println("Identifier already exists.");
+        return;
+    }
+    
+    if (type.equals(ShapesApp.CIRCLE)) {
+        int radius = Integer.parseInt(parts[3]);
+        sCollection.addElem(new CircleClass(id, x, y, radius));
+    } else {
+        int height = Integer.parseInt(parts[3]);
+        int width = Integer.parseInt(parts[4]);
+        sCollection.addElem(new RectangleClass(id, x, y, height, width));
+    }
+    System.out.println("A new " + type + " was added.");
+}
 
     private static void listShape(Scanner in, ShapesCollection  sCollection) {
         String line = in.hasNextLine() ? in.nextLine().trim().toUpperCase() : "";
