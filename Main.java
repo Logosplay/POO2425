@@ -14,18 +14,26 @@ public class Main {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         ShapesCollectionClass sCollection = new ShapesCollectionClass();
-
+    
         while (true) {
-            String fullLine = in.nextLine().trim();
-        if (fullLine.isEmpty()) continue;
-
-        String[] tokens = fullLine.split(" ");
-        String command = tokens[0].toUpperCase();
-        
+            String[] input = in.nextLine().trim().split(" ");
+            String command = input[0].toUpperCase();
+    
             switch (command) {
-                case ADD:
-                    addShapeType(in, sCollection);
+                case ADD: {
+                    // Ensure there is a second argument for shape type
+                    String type = (input.length > 1) ? input[1].toUpperCase() : null;
+                    
+                    // If type is missing, print an error message and skip the command
+                    if (type == null) {
+                        System.out.println("Error: Shape type is missing.");
+                        break;
+                    }
+
+                    System.out.println(type);
+                    addShapeType(in, sCollection, type);
                     break;
+                }
                 case LIST:
                     listShape(in, sCollection);
                     break;
@@ -37,7 +45,6 @@ public class Main {
                     break;
                 case EXIT:
                     System.out.println(QUIT_MSG);
-                    in.close();
                     return;
                 default:
                     System.out.println(COMMAND_ERROR);
@@ -46,35 +53,47 @@ public class Main {
         }
     }
 
-    private static void addShapeType(Scanner in, ShapesCollection  sCollection) {
-        String type = in.nextLine().trim().toUpperCase();
-        if (!ShapesApp.isValidType(type)) {
+    private static void addShapeType(Scanner in, ShapesCollection sCollection, String type){
+        if (type == null || !ShapesApp.isValidType(type)) {
             System.out.println("Type does not exist.");
             return;
         }
 
         String[] parts = in.nextLine().trim().split(" ");
+        if (parts.length < 3) {
+            System.out.println("Error: Insufficient parameters to create a shape.");
+            return;
+        }
+
         String id = parts[0];
         int x = Integer.parseInt(parts[1]);
         int y = Integer.parseInt(parts[2]);
 
-        if ( sCollection.hasElem(id)) {
+        if (sCollection.hasElem(id)) {
             System.out.println("Identifier already exists.");
             return;
         }
 
         if (type.equals(ShapesApp.CIRCLE)) {
+            if (parts.length < 4) {
+                System.out.println("Error: Missing radius for the circle.");
+                return;
+            }
             int radius = Integer.parseInt(parts[3]);
-             sCollection.addElem(new CircleClass(id, x, y, radius));
+            sCollection.addElem(new CircleClass(id, x, y, radius));
         } else {
+            if (parts.length < 5) {
+                System.out.println("Error: Missing height and/or width for the rectangle.");
+                return;
+            }
             int height = Integer.parseInt(parts[3]);
             int width = Integer.parseInt(parts[4]);
-             sCollection.addElem(new RectangleClass(id, x, y, height, width));
+            sCollection.addElem(new RectangleClass(id, x, y, height, width));
         }
         System.out.println("A new " + type + " was added.");
     }
 
-    private static void listShape(Scanner in, ShapesCollection  sCollection) {
+    private static void listShape(Scanner in, ShapesCollection sCollection) {
         String line = in.hasNextLine() ? in.nextLine().trim().toUpperCase() : "";
         System.out.println("All shapes:");
 
@@ -99,13 +118,18 @@ public class Main {
         }
     }
 
-    private static void moveShape(Scanner in, ShapesCollection  sCollection) {
+    private static void moveShape(Scanner in, ShapesCollection sCollection) {
         String[] parts = in.nextLine().trim().split(" ");
+        if (parts.length < 3) {
+            System.out.println("Error: Missing parameters to move the shape.");
+            return;
+        }
+
         String id = parts[0];
         int x = Integer.parseInt(parts[1]);
         int y = Integer.parseInt(parts[2]);
 
-        if (! sCollection.hasElem(id)) {
+        if (!sCollection.hasElem(id)) {
             System.out.println("Identifier does not exist.");
             return;
         }
@@ -115,25 +139,25 @@ public class Main {
         System.out.println("Shape was moved.");
     }
 
-    private static void minareaShape(ShapesCollection  sCollection) {
-        if ( sCollection.isEmpty()) {
+    private static void minareaShape(ShapesCollection sCollection) {
+        if (sCollection.isEmpty()) {
             System.out.println("Without geometric shapes.");
             return;
         }
 
-        Iterator iterator =  sCollection.allShapesIterator();
+        Iterator iterator = sCollection.allShapesIterator();
         Shape min = null;
         while (iterator.hasNext()) {
             Shape current = iterator.next();
             if (min == null || current.getArea() < min.getArea() ||
-               (current.getArea() == min.getArea() && isLater(current, min,  sCollection))) {
+               (current.getArea() == min.getArea() && isLater(current, min, sCollection))) {
                 min = current;
             }
         }
         System.out.println(min.getId() + " " + min.getPosition() + " " + min.getType());
     }
 
-    private static boolean isLater(Shape s1, Shape s2, ShapesCollection  sCollection) {
+    private static boolean isLater(Shape s1, Shape s2, ShapesCollection sCollection) {
         Iterator it =  sCollection.allShapesIterator();
         while (it.hasNext()) {
             Shape current = it.next();

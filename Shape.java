@@ -4,6 +4,7 @@ public abstract class Shape {
     protected String id;
     protected int x, y;
     protected String type;  // Set type in subclasses
+    protected Shape position; // Set position in subclasses
 
     public Shape(String id, int x, int y) {
         this.id = id;
@@ -11,12 +12,16 @@ public abstract class Shape {
         this.y = y;
     }
 
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
+
     public String getId() {
         return id;
     }
 
-    public int[] getPosition() {
-        return new int[]{x, y};
+    public Shape getPosition() {
+        return position;
     }
 
     public String getType() {
